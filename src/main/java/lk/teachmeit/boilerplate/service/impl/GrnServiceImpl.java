@@ -2,16 +2,19 @@ package lk.teachmeit.boilerplate.service.impl;
 
 import lk.teachmeit.boilerplate.dao.GrnDao;
 import lk.teachmeit.boilerplate.dto.GrnDto;
+import lk.teachmeit.boilerplate.model.Grn;
 import lk.teachmeit.boilerplate.service.interfaces.ICrudService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class GrnServiceImpl implements ICrudService<GrnDto, GrnDto> {
+public class GrnServiceImpl implements ICrudService<GrnDto, Grn> {
 
-    private GrnDao grnDao;
+    private final GrnDao grnDao;
+    private final ModelMapper modelMapper = new ModelMapper();
 
     @Autowired
     public GrnServiceImpl(GrnDao grnDao) {
@@ -19,37 +22,44 @@ public class GrnServiceImpl implements ICrudService<GrnDto, GrnDto> {
     }
 
     @Override
-    public GrnDto create(GrnDto grnDto) {
-        return null;
+    public Grn create(GrnDto grnDto) {
+        Grn grn = modelMapper.map(grnDto, Grn.class);
+        grn = grnDao.save(grn);
+        return grn;
     }
 
     @Override
-    public GrnDto update(GrnDto grnDto) {
-        return null;
+    public Grn update(GrnDto grnDto) {
+        Grn grn = modelMapper.map(grnDto, Grn.class);
+        grn = grnDao.save(grn);
+        return grn;
     }
 
     @Override
     public boolean delete(GrnDto grnDto) {
-        return false;
+        Grn grn = modelMapper.map(grnDto, Grn.class);
+        grnDao.delete(grn);
+        return true;
     }
 
     @Override
     public boolean delete(long id) {
-        return false;
+        grnDao.deleteById(id);
+        return true;
     }
 
     @Override
-    public GrnDto getById(long id) {
-        return null;
+    public Grn getById(long id) {
+        return grnDao.findById(id).get();
     }
 
     @Override
-    public List<GrnDto> getAll() {
-        return null;
+    public List<Grn> getAll() {
+        return (List<Grn>) grnDao.findAll();
     }
 
     @Override
-    public List<GrnDto> getPaginate(long page, long offset) {
+    public List<Grn> getPaginate(long page, long offset) {
         return null;
     }
 }

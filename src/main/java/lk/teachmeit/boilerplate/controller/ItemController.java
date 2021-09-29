@@ -2,38 +2,79 @@ package lk.teachmeit.boilerplate.controller;
 
 import lk.teachmeit.boilerplate.dto.ItemDto;
 import lk.teachmeit.boilerplate.dto.ResponseWrapper;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import lk.teachmeit.boilerplate.model.Grn;
+import lk.teachmeit.boilerplate.model.Item;
+import lk.teachmeit.boilerplate.service.impl.ItemServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/item")
 public class ItemController implements IController<ItemDto> {
-    @Override
-    public ResponseWrapper create(ItemDto item, HttpServletRequest request) {
-        return null;
+
+    ItemServiceImpl itemService;
+
+    @Autowired
+    public ItemController(ItemServiceImpl itemService) {
+        this.itemService = itemService;
     }
 
+    @PostMapping
     @Override
-    public ResponseWrapper update(ItemDto item, HttpServletRequest request) {
-        return null;
+    public ResponseWrapper create(@ModelAttribute ItemDto item, HttpServletRequest request) {
+        try {
+            Item res = itemService.create(item);
+            return new ResponseWrapper(res, "success", "Created");
+        }catch (Exception e) {
+            return new ResponseWrapper(null, "failed", "Internal server error");
+        }
     }
 
+    @PutMapping
     @Override
-    public ResponseWrapper deleteById(long id, HttpServletRequest request) {
-        return null;
+    public ResponseWrapper update(@ModelAttribute ItemDto item, HttpServletRequest request) {
+        try {
+            Item res = itemService.create(item);
+            return new ResponseWrapper(res, "success", "Updated");
+        }catch (Exception e) {
+            return new ResponseWrapper(null, "failed", "Internal server error");
+        }
     }
 
+    @DeleteMapping("/{id}")
     @Override
-    public ResponseWrapper getById(long id, HttpServletRequest request) {
-        return null;
+    public ResponseWrapper deleteById(@PathVariable long id, HttpServletRequest request) {
+        try {
+            itemService.delete(id);
+            return new ResponseWrapper(null, "success", "Deleted");
+        }catch (Exception e) {
+            return new ResponseWrapper(null, "failed", "Internal server error");
+        }
     }
 
+    @GetMapping("/{id}")
+    @Override
+    public ResponseWrapper getById(@PathVariable long id, HttpServletRequest request) {
+        try {
+            Item item = itemService.getById(id);
+            return new ResponseWrapper(item, "success", "Fetched");
+        }catch (Exception e) {
+            return new ResponseWrapper(null, "failed", "Internal server error");
+        }
+    }
+
+    @GetMapping
     @Override
     public ResponseWrapper getAll(HttpServletRequest request) {
-        return null;
+        try {
+            List<Item> res = itemService.getAll();
+            return new ResponseWrapper(res, "success", "Fetched");
+        }catch (Exception e) {
+            return new ResponseWrapper(null, "failed", "Internal server error");
+        }
     }
 }

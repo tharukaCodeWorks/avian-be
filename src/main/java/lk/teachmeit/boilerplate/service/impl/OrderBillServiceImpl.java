@@ -2,8 +2,10 @@ package lk.teachmeit.boilerplate.service.impl;
 
 import lk.teachmeit.boilerplate.dao.OrderBillDao;
 import lk.teachmeit.boilerplate.dto.OrderBillDto;
+import lk.teachmeit.boilerplate.model.Grn;
 import lk.teachmeit.boilerplate.model.OrderBill;
 import lk.teachmeit.boilerplate.service.interfaces.ICrudService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,7 +14,8 @@ import java.util.List;
 @Service
 public class OrderBillServiceImpl implements ICrudService<OrderBillDto, OrderBill> {
 
-    private OrderBillDao orderBillDao;
+    private final OrderBillDao orderBillDao;
+    private final ModelMapper modelMapper = new ModelMapper();
 
     @Autowired
     public OrderBillServiceImpl(OrderBillDao orderBillDao) {
@@ -21,32 +24,39 @@ public class OrderBillServiceImpl implements ICrudService<OrderBillDto, OrderBil
 
     @Override
     public OrderBill create(OrderBillDto orderBillDto) {
-        return null;
+        OrderBill orderBill = modelMapper.map(orderBillDto, OrderBill.class);
+        orderBill = orderBillDao.save(orderBill);
+        return orderBill;
     }
 
     @Override
     public OrderBill update(OrderBillDto orderBillDto) {
-        return null;
+        OrderBill orderBill = modelMapper.map(orderBillDto, OrderBill.class);
+        orderBill = orderBillDao.save(orderBill);
+        return orderBill;
     }
 
     @Override
     public boolean delete(OrderBillDto orderBillDto) {
-        return false;
+        OrderBill orderBill = modelMapper.map(orderBillDto, OrderBill.class);
+        orderBillDao.delete(orderBill);
+        return true;
     }
 
     @Override
     public boolean delete(long id) {
-        return false;
+        orderBillDao.deleteById(id);
+        return true;
     }
 
     @Override
     public OrderBill getById(long id) {
-        return null;
+        return orderBillDao.findById(id).get();
     }
 
     @Override
     public List<OrderBill> getAll() {
-        return null;
+        return (List<OrderBill>) orderBillDao.findAll();
     }
 
     @Override
