@@ -84,12 +84,12 @@ public class AuthServiceImpl implements AuthService {
             user.setEmail(userDto.getEmail());
             user.setPassword(userDto.getPassword());
             user.setEmailVerifyCode(resetCode);
-            user.setIsEmailVerified("FALSE");
+            user.setIsEmailVerified("TRUE");
             user.setPassword(bcryptEncoder.encode(userDto.getPassword()));
-            Context emailContext = new Context();
-            emailContext.setVariable("user", user);
-            emailContext.setVariable("code", resetCode);
-            emailService.sendHtmlEmailSmtp("Email Verification ", this.htmlProcessService.processHtml(emailContext, "email/email-verification"), user.getEmail());
+//            Context emailContext = new Context();
+//            emailContext.setVariable("user", user);
+//            emailContext.setVariable("code", resetCode);
+//            emailService.sendHtmlEmailSmtp("Email Verification ", this.htmlProcessService.processHtml(emailContext, "email/email-verification"), user.getEmail());
             return userService.save(user);
         } else {
             throw new EmailAlreadyException("Email address already using");
