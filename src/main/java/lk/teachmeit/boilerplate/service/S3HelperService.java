@@ -67,7 +67,7 @@ public class S3HelperService {
 
             s3Client.putObject(request);
 
-            return "https://"+bucketName+"."+clientRegion+".amazonaws.com" + "/" + objectName;
+            return "https://ewr1.vultrobjects.com" + "/" + objectName;
         }
     }
 
