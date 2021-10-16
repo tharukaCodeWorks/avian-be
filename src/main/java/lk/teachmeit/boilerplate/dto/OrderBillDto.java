@@ -1,6 +1,7 @@
 package lk.teachmeit.boilerplate.dto;
 
 import lk.teachmeit.boilerplate.enums.OrderStatus;
+import lk.teachmeit.boilerplate.model.Item;
 import lk.teachmeit.boilerplate.model.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -15,10 +16,9 @@ import java.util.Date;
 @AllArgsConstructor
 public class OrderBillDto {
     private Long id;
-    private User orderedBy;
+    private Long orderedById;
     private Date orderedAt;
+    private Long itemId;
+    private Long qty;
     private OrderStatus orderStatus;
-    private Date pendingDate;
-    private Date dispatchedDate;
-    private Date deliveredDate;
 }

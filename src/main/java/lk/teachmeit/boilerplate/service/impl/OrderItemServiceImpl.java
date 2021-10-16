@@ -1,7 +1,9 @@
 package lk.teachmeit.boilerplate.service.impl;
 
+import lk.teachmeit.boilerplate.dao.ItemDao;
 import lk.teachmeit.boilerplate.dao.OrderItemDao;
 import lk.teachmeit.boilerplate.dto.OrderItemDto;
+import lk.teachmeit.boilerplate.model.Item;
 import lk.teachmeit.boilerplate.model.OrderBill;
 import lk.teachmeit.boilerplate.model.OrderItem;
 import lk.teachmeit.boilerplate.service.interfaces.ICrudService;
@@ -15,16 +17,21 @@ import java.util.List;
 public class OrderItemServiceImpl implements ICrudService<OrderItemDto, OrderItem> {
 
     private final OrderItemDao orderItemDao;
+    private final ItemDao itemDao;
     private final ModelMapper modelMapper = new ModelMapper();
 
     @Autowired
-    public OrderItemServiceImpl(OrderItemDao orderItemDao) {
+    public OrderItemServiceImpl(OrderItemDao orderItemDao, ItemDao itemDao) {
         this.orderItemDao = orderItemDao;
+        this.itemDao = itemDao;
     }
 
     @Override
     public OrderItem create(OrderItemDto orderItemDto) {
         OrderItem orderItem = modelMapper.map(orderItemDto, OrderItem.class);
+        Item item = itemDao.findById(orderItemDto.getItemId()).get();
+        item.setQty(item.getQty()-orderItem.getQty());
+        itemDao.save(item);
         orderItem = orderItemDao.save(orderItem);
         return orderItem;
     }
@@ -32,6 +39,9 @@ public class OrderItemServiceImpl implements ICrudService<OrderItemDto, OrderIte
     @Override
     public OrderItem update(OrderItemDto orderItemDto) {
         OrderItem orderItem = modelMapper.map(orderItemDto, OrderItem.class);
+        Item item = itemDao.findById(orderItemDto.getItemId()).get();
+        item.setQty(item.getQty()-orderItem.getQty());
+        itemDao.save(item);
         orderItem = orderItemDao.save(orderItem);
         return orderItem;
     }

@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import java.util.List;
@@ -13,7 +14,9 @@ import java.util.List;
 @Entity
 @Getter @Setter @NoArgsConstructor @AllArgsConstructor
 public class OrderItem {
-    private @Id Long id;
+    @Id
+    @GeneratedValue
+    private Long id;
     private Integer qty;
     @OneToOne
     private Item item;

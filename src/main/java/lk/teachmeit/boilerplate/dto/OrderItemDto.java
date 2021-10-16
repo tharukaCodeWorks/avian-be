@@ -16,6 +16,6 @@ import javax.persistence.OneToOne;
 public class OrderItemDto {
     private Long id;
     private Integer qty;
-    private Long itemID;
+    private Long itemId;
     private Long orderBillId;
 }

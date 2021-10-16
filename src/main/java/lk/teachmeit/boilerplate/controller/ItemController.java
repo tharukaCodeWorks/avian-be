@@ -2,6 +2,7 @@ package lk.teachmeit.boilerplate.controller;
 
 import lk.teachmeit.boilerplate.dto.ItemDto;
 import lk.teachmeit.boilerplate.dto.ResponseWrapper;
+import lk.teachmeit.boilerplate.enums.ItemType;
 import lk.teachmeit.boilerplate.model.Grn;
 import lk.teachmeit.boilerplate.model.Item;
 import lk.teachmeit.boilerplate.service.impl.ItemServiceImpl;
@@ -25,7 +26,7 @@ public class ItemController implements IController<ItemDto> {
 
     @PostMapping
     @Override
-    public ResponseWrapper create(@ModelAttribute ItemDto item, HttpServletRequest request) {
+    public ResponseWrapper create(@RequestBody ItemDto item, HttpServletRequest request) {
         try {
             Item res = itemService.create(item);
             return new ResponseWrapper(res, "success", "Created");
@@ -36,7 +37,7 @@ public class ItemController implements IController<ItemDto> {
 
     @PutMapping
     @Override
-    public ResponseWrapper update(@ModelAttribute ItemDto item, HttpServletRequest request) {
+    public ResponseWrapper update(@RequestBody ItemDto item, HttpServletRequest request) {
         try {
             Item res = itemService.create(item);
             return new ResponseWrapper(res, "success", "Updated");
@@ -67,11 +68,37 @@ public class ItemController implements IController<ItemDto> {
         }
     }
 
-    @GetMapping
+
     @Override
-    public ResponseWrapper getAll(HttpServletRequest request) {
+    public ResponseWrapper getAll( HttpServletRequest request) {
         try {
             List<Item> res = itemService.getAll();
+            return new ResponseWrapper(res, "success", "Fetched");
+        }catch (Exception e) {
+            return new ResponseWrapper(null, "failed", "Internal server error");
+        }
+    }
+
+    @GetMapping
+    public ResponseWrapper getAll(@RequestParam(name = "type", required = false) ItemType itemType,  HttpServletRequest request) {
+        try {
+            List<Item> res;
+            if(itemType == null) {
+                res = itemService.getAll();
+            } else {
+                res = itemService.getByItemType(itemType);
+            }
+
+            return new ResponseWrapper(res, "success", "Fetched");
+        }catch (Exception e) {
+            return new ResponseWrapper(null, "failed", "Internal server error");
+        }
+    }
+
+    @GetMapping("/latest-10")
+    public ResponseWrapper getLatestTen(HttpServletRequest request) {
+        try {
+            List<Item> res = itemService.getLatest10();
             return new ResponseWrapper(res, "success", "Fetched");
         }catch (Exception e) {
             return new ResponseWrapper(null, "failed", "Internal server error");
