@@ -89,6 +89,15 @@ public class AuthController {
         }
     }
 
+    @GetMapping(value = "/user/count")
+    public Object getUserCount() {
+        try{
+            return new ResponseWrapper(authService.getUserCount(), "success", "Success");
+        }  catch (Exception e) {
+            return new ResponseWrapper(null, "failed", "Something went wrong! Please contact developer");
+        }
+    }
+
     @PostMapping(value = "/password/reset")
     public Object verifyResetCode(@RequestParam("email") String email, @RequestParam("resetCode") String resetCode, @RequestParam("newPassword") String newPassword) {
         try{

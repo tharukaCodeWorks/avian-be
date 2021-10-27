@@ -2,6 +2,7 @@ package lk.teachmeit.boilerplate.controller;
 
 import lk.teachmeit.boilerplate.dto.OrderBillDto;
 import lk.teachmeit.boilerplate.dto.ResponseWrapper;
+import lk.teachmeit.boilerplate.enums.OrderStatus;
 import lk.teachmeit.boilerplate.model.ItemType;
 import lk.teachmeit.boilerplate.model.OrderBill;
 import lk.teachmeit.boilerplate.model.User;
@@ -67,6 +68,16 @@ public class OrderBillController implements IController<OrderBillDto> {
         }
     }
 
+    @PutMapping("/{id}/{status}")
+    public ResponseWrapper updateStatus(@PathVariable long id, @PathVariable OrderStatus status, HttpServletRequest request) {
+        try {
+            OrderBill res = orderBillService.updateOrderStatus(id, status);
+            return new ResponseWrapper(res, "success", "Updated");
+        }catch (Exception e) {
+            return new ResponseWrapper(null, "failed", "Internal server error");
+        }
+    }
+
     @GetMapping("/{id}")
     @Override
     public ResponseWrapper getById(@PathVariable long id, HttpServletRequest request) {
@@ -94,6 +105,16 @@ public class OrderBillController implements IController<OrderBillDto> {
         try {
             User user = tokenProvider.getAuthUser(request);
             List<OrderBill> res = orderBillService.getMyAll(user.getId());
+            return new ResponseWrapper(res, "success", "Fteched");
+        }catch (Exception e) {
+            return new ResponseWrapper(null, "failed", "Internal server error");
+        }
+    }
+
+    @GetMapping("/count")
+    public ResponseWrapper getOrderCount(HttpServletRequest request) {
+        try {
+            long res = orderBillService.getOrderCount();
             return new ResponseWrapper(res, "success", "Fteched");
         }catch (Exception e) {
             return new ResponseWrapper(null, "failed", "Internal server error");

@@ -79,4 +79,8 @@ public class ItemServiceImpl implements ICrudService<ItemDto, Item> {
     public List<Item> getPaginate(long page, long offset) {
         return null;
     }
+
+    public long getItemCount() {
+        return itemDao.countItems();
+    }
 }

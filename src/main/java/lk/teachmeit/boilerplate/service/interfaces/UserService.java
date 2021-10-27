@@ -18,4 +18,6 @@ public interface UserService {
     List<User> getByPermission(String permission);
 
     boolean isUserExists(String email);
+
+    long getUserCount();
 }

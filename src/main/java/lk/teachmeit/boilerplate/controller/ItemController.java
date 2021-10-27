@@ -104,4 +104,14 @@ public class ItemController implements IController<ItemDto> {
             return new ResponseWrapper(null, "failed", "Internal server error");
         }
     }
+
+    @GetMapping("/count")
+    public ResponseWrapper getItemCount(HttpServletRequest request) {
+        try {
+            long res = itemService.getItemCount();
+            return new ResponseWrapper(res, "success", "Fetched");
+        }catch (Exception e) {
+            return new ResponseWrapper(null, "failed", "Internal server error");
+        }
+    }
 }

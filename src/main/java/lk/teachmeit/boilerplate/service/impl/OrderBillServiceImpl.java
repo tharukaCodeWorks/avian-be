@@ -53,6 +53,18 @@ public class OrderBillServiceImpl implements ICrudService<OrderBillDto, OrderBil
         return orderBill;
     }
 
+    public OrderBill updateOrderStatus(long orderId, OrderStatus status) throws Exception {
+        OrderBill orderBill = orderBillDao.findById(orderId).get();
+        orderBill.setOrderStatus(status);
+        orderBill = orderBillDao.save(orderBill);
+        OrderTrackingDto orderTracking = new OrderTrackingDto();
+        orderTracking.setOrderBillId(orderBill.getId());
+        orderTracking.setOrderStatus(status);
+        orderTracking.setDate(new Date());
+        orderTrackingService.create(orderTracking);
+        return orderBill;
+    }
+
     @Override
     public boolean delete(OrderBillDto orderBillDto) {
         OrderBill orderBill = modelMapper.map(orderBillDto, OrderBill.class);
@@ -83,5 +95,9 @@ public class OrderBillServiceImpl implements ICrudService<OrderBillDto, OrderBil
 
     public List<OrderBill> getMyAll(Long id) {
         return orderBillDao.findByOrderedById(id);
+    }
+
+    public long getOrderCount() {
+        return orderBillDao.countOrders();
     }
 }

@@ -15,4 +15,6 @@ public interface AuthService {
     Object forgotPassword(String email) throws IOException;
     Object checkPasswordVerifyCode(String email, String code);
     Object resetPassword(String email, String code, String newPassword) throws IOException;
+
+    long getUserCount();
 }

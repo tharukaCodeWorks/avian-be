@@ -58,6 +58,11 @@ public class UserServiceImpl implements UserDetailsService, UserService {
 	}
 
 	@Override
+	public long getUserCount() {
+		return userDao.countUsers();
+	}
+
+	@Override
 	public void delete(long id) {
 		userDao.deleteById(id);
 	}

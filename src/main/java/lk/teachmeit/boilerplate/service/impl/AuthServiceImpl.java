@@ -166,4 +166,9 @@ public class AuthServiceImpl implements AuthService {
             throw new InvalidCredentialsException("User not found");
         }
     }
+
+    @Override
+    public long getUserCount() {
+        return userService.getUserCount();
+    }
 }

@@ -1,6 +1,7 @@
 package lk.teachmeit.boilerplate.dao;
 
 import lk.teachmeit.boilerplate.model.User;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
@@ -17,4 +18,6 @@ public interface UserDao extends CrudRepository<User, Long> {
     List<User> findByPermissionsName(String permissionName);
     List<User> findByRoleId(long roleId);
     boolean existsByEmail(String email);
+    @Query("SELECT count(*) FROM User")
+    long countUsers();
 }
